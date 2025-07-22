@@ -1,17 +1,5 @@
-name: CodeRabbit Review
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Run CodeRabbit Review
-        uses: coderabbitai/github-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+reviews:
+  branches:
+    include:
+      - "**"  # すべてのブランチを対象にする
+  review_status: true  # （必要に応じて）ステータスメッセージを有効化
