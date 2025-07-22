@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+	<script src="/js/jquery-3.3.1.min.js"></script>
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/editAll.js"></script>
+	<script src="/js/list.js"></script>
+	<title>電話帳</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="card mt-4">
+			<h3 class="card-header">電話帳一括編集</h3>
+			<div class="card-body">
+				<form th:action="@{/edit/all/saveAll}" method="post" th:object="${telDataAllForm}" id="form">
+					<!-- テーブル形式の入力欄 -->
+					<table class="table mt-3" id="table">
+						<thead>
+							<tr>
+								<th>氏名</th>
+								<th>電話番号</th>
+								<th>メールアドレス</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<input type="text" name="users[0].userName" class="form-control" placeholder="氏名"
+										required />
+									<div th:if="${#fields.hasErrors('users[0].userName')}"
+										th:errors="*{users[0].userName}" class="text-danger"></div>
+								</td>
+								<td>
+									<input type="tel" name="users[0].telNo" class="form-control" placeholder="電話番号"
+										required />
+									<div th:if="${#fields.hasErrors('users[0].telNo')}" th:errors="*{users[0].telNo}"
+										class="text-danger">
+									</div>
+								</td>
+								<td>
+									<input type="email" name="users[0].mailAddr" class="form-control"
+										placeholder="メールアドレス" required />
+									<div th:if="${#fields.hasErrors('users[0].mailAddr')}"
+										th:errors="*{users[0].mailAddr}" class="text-danger"></div>
+								</td>
+								<td>
+									<button type="button" class="btn btn-danger btn-sm btn-delete">削除</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<!-- 行追加ボタン -->
+					<div class="col mb-3">
+						<button type="button" id="addRow" class="btn btn-secondary">行を追加</button>
+					</div>
+
+
+
+					<!-- 保存ボタン -->
+					<div class="col">
+						<input type="submit" class="btn btn-primary" value="一括保存" />
+						<button type="button" class="btn btn-primary" id="asyncSaveBtn">非同期保存</button>
+					</div>
+
+					<!-- 確認モーダル -->
+					<div class="modal" id="confirmModal" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">確認</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<p>保存してもよろしいですか？</p>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+									<button type = "button" class="btn btn-primary" id="confirmOkBtn">OK</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- エラーモーダル -->
+					<div class="modal" id="errorModal" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">エラー</h5>
+								</div>
+								<div class="modal-body">
+									<p id="errorMsg"></p>
+								</div>
+								<div class="modal-footer">
+									<button  type = "button" class="btn btn-danger" data-dismiss="modal">閉じる</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 完了モーダル -->
+					<div class="modal" id="successModal" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">保存完了</h5>
+								</div>
+								<div class="modal-body">
+									<p>保存が完了しました。</p>
+								</div>
+								<div class="modal-footer">
+									<button  type = "button" class="btn btn-success" id="successOkBtn">OK</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				</form>
+			</div>
+
+		</div>
+	</div>
+	</div>
+</body>
+
+</html>
