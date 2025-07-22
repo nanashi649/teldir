@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+
+<head>
+	<title>電話帳</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+	<script src="/js/jquery-3.3.1.min.js"></script>
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/list.js"></script>
+
+
+</head>
+
+
+<div class="container">
+	<div class="card mt-4">
+		<h3 class="card-header">電話帳データ一覧</h3>
+		<div class="card-body">
+			<a class="btn btn-secondary btn-sm" href="/edit">新規作成</a>
+			<a class="btn btn-secondary btn-sm" href="/edit/all"> 一括編集</a>
+			<div class="mb-3"></div>
+			<form th:action="@{delete}" method="post" th:object="${telDataForm}">
+				<table class="table table-bordered table-hover" id="table">
+					<thead>
+						<tr>
+							<th class="text-center">選択</th>
+							<th class="text-center">氏名</th>
+							<th class="text-center">電話番号</th>
+							<th class="text-center">メールアドレス</th>
+							<th class="text-center">編集</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="telData,stat : ${telDataList}"
+							th:class="${stat.index %2 != 0} ? 'table-danger' :''">
+							<td class="text-center">
+								<input type="checkbox" name="selectRecords" th:value="${telData.id}">
+							</td>
+							<td class="name"
+								th:text="${stat.index % 2 != 0} ? (${telData.userName} + 'B') : ${telData.userName}">
+							</td>
+
+
+							<td th:text="${telData.telNo}"></td>
+							<td th:text="${telData.mailAddr}"></td>
+							<td class="text-center"><a class="btn btn-secondary btn-sm"
+									th:href="@{/edit(id=${telData.id})}">編集</a></td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="submit" class="btn btn-primary btn-sm" value="削除">
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="card mt-4">
+		<h3 class="card-header">グループデータ一覧</h3>
+		<div class="card-body">
+			<a class="btn btn-secondary" href="/editGroup">新規作成</a>
+		</div>
+		<div class="mb-3">
+		</div>
+		<form th:action=@{deleteGroup} method="post" th:object="${groupDataForm}">
+
+			<table class="table table-bordered table-hover">
+				<thead>
+					<th class="text-center">選択</th>
+					<th class="text-center">グループ名</th>
+					<th class="text-center">編集</th>
+				</thead>
+				<tbody>
+					<tr th:each="groupData,stat: ${GroupDataList}"
+						th:class="${stat.index %2 != 0} ? 'table-danger' :''">
+						<td class="text-center"><input type="checkbox" name="selectRecords"
+								th:value="${groupData.groupId}"></td>
+						<td th:text="${groupData.groupName}"> </td>
+						<td><a th:href="@{/editGroup(groupId=${groupData.groupId})}"
+								class="btn btn-secondary btn-sm">編集</a></td>
+					</tr>
+				</tbody>
+
+
+
+			</table>
+			<input type="submit" value="削除" class="btn btn-primary btn-sm">
+		</form>
+	</div>
+</div>
+
+<div class="mb-4"></div>
+
+<div class="container mt-4">
+	<div class="card p-4">
+		<h3 class="mb-3">ユーザーグループ検索</h3>
+
+		<!-- 検索フォーム -->
+		<form method="get" th:action="@{/search}" th:object="${searchForm}" class="mb-3">
+			<input type="text" placeholder="ユーザー名" name="userName">
+			<input type="text" placeholder="グループ名" name="groupName">
+			<input type="submit" class="btn btn-primary btn-sm" value="検索">
+		</form>
+
+		<!-- 検索結果テーブル -->
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th class="text-center">ユーザー名</th>
+					<th class="text-center">グループ名</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="groupUserData ,stat: ${userNameList}"
+					th:class="${stat.index %2 != 0} ? 'table-danger' :''">
+					<td th:text="${groupUserData.userName}"></td>
+					<!--					グループネームが設定されてなくても例外が発生しないよう -->
+					<td th:text="${groupUserData.group?.groupName} ?:'未設定'"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<a th:href="@{/download}" class="btn btn-success">CSVダウンロード</a>
+
+<form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+	<input type="file" name="file">
+	<button type="submit">アップロード</button>
+
+</form>
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>

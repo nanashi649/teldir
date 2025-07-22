@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+
+<head>
+	<title>アップロード結果</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+	<script src="/js/jquery-3.3.1.min.js"></script>
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/list.js"></script>
+
+
+</head>
+
+<body>
+	<div class = "alart">
+		<h2 th:text = "${message}">アップロード結果</h2>
+		<a th:href = "@{/}">戻る</a>
+	</div>
+</body>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<title layout:fragment="title">共通タイトル</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<header>
+		<h1>電話帳</h1>
+	</header>
+	ここより上のコードを共通化
+	<main layout:fragment="content">
+		 子テンプレートの内容がここに差し込まれる 
+	</main>
+
+	<footer>
+		<p>© 2025 Ridi Inc.</p>
+	</footer>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+	<script src="/js/jquery-3.3.1.min.js"></script>
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/editGroup.js"></script>
+	<title>電話帳</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="card mt-4">
+			<h3 class="card-header">グループ名編集</h3>
+			<div class="card-body">
+				<form th:action="@{/editGroup/saveGroup}" method="post" th:object="${groupDataForm}">
+					<label>グループ名</label>
+					<input type="text" th:field="*{groupName}" size="40" maxlength="20" placeholder="グループ名"
+						class="form-control mb-2">
+					<div th:if="${#fields.hasErrors('groupName')}" th:errors="*{groupName}" class="text-danger"></div>
+					<input type="hidden" th:field="*{groupId}">
+					<input type="hidden" id="lastModified" th:field=*{lastModified} />
+					<input type="submit" value="登録" class="btn btn-primary">
+					<button type="button" class="btn btn-primary" id="asyncSaveBtn">一括保存</button>
+					<!-- ✅ 確認用モーダル -->
+					<div class="modal" id="confirmModal" tabindex="-1" role="dialog">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">確認</h5>
+								</div>
+								<div class="modal-body">
+									<p>この内容で保存しますか？</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" id="confirmOkBtn">OK</button>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- ✅ 成功用モーダル -->
+					<div class="modal" id="successModal" tabindex="-1" role="dialog">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">保存完了</h5>
+								</div>
+								<div class="modal-body">
+									<p>保存が完了しました。</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" id="successOkBtn">OK</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- ✅ エラー用モーダル -->
+					<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">エラー</h5>
+								</div>
+								<div class="modal-body">
+									<p id="errorMsg">エラー内容がここに表示されます</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
