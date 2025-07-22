@@ -1,5 +1,0 @@
-reviews:
-  branches:
-    include:
-      - "**"  # すべてのブランチを対象にする
-  review_status: true  # （必要に応じて）ステータスメッセージを有効化
