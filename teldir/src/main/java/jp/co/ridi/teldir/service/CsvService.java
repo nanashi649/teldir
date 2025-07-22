@@ -16,7 +16,6 @@ import com.opencsv.exceptions.CsvValidationException;
 
 import jp.co.ridi.teldir.dto.TelDataDto;
 
-
 @Service
 public class CsvService {
 	public void writeCsv(Writer writer, List<TelDataDto> dataList) throws IOException {
