@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.ridi.teldir.dto.EditDto;
 import jp.co.ridi.teldir.dto.EditGroupDto;
 import jp.co.ridi.teldir.dto.TelDataDto;
-import jp.co.ridi.teldir.form.GroupDataForm;
 import jp.co.ridi.teldir.form.TelDataAllForm;
 import jp.co.ridi.teldir.form.TelDataForm;
+import jp.co.ridi.teldir.form.TelGroupForm;
 import jp.co.ridi.teldir.service.EditGroupService;
 import jp.co.ridi.teldir.service.EditService;
 import jp.co.ridi.teldir.util.BeanUtil;
@@ -45,24 +45,19 @@ public class TelDataRestController {
 			}
 			return ResponseEntity.badRequest().body(errors);
 		}
-
 		try {
 			// 保存処理
 			service.saveTelData(BeanUtil.createProperties(form, EditDto.class));
 			return ResponseEntity.ok().build();// 成功
 		} catch (OptimisticLockingFailureException e) {
-			Map<String, String> error = new HashMap<>();
-			error.put("optimisticError", e.getMessage());
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+			return handleOptimisticLockError(e);
 		} catch (Exception e) {
-			Map<String, String> error = new HashMap<>();
-			error.put("message", e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+			return handleServerError(e, null);
 		}
 	}
 
 	@PostMapping("/saveGroup")
-	public ResponseEntity<?> saveGroupTelData(@RequestBody @Valid GroupDataForm form, BindingResult result) {
+	public ResponseEntity<?> saveGroupTelData(@RequestBody @Valid TelGroupForm form, BindingResult result) {
 		// ヴァリデーションエラーがあった場合.badRequest()を返す
 		if (result.hasErrors()) {
 			Map<String, String> errors = new HashMap<>();
@@ -77,13 +72,9 @@ public class TelDataRestController {
 			groupService.saveGroupData(BeanUtil.createProperties(form, EditGroupDto.class));
 			return ResponseEntity.ok().build();// 成功
 		} catch (OptimisticLockingFailureException e) {
-			Map<String, String> error = new HashMap<>();
-			error.put("optimisticError", e.getMessage());
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+			return handleOptimisticLockError(e);
 		} catch (Exception e) {
-			Map<String, String> error = new HashMap<>();
-			error.put("message", e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+			return handleServerError(e, null);
 		}
 	}
 
@@ -105,14 +96,30 @@ public class TelDataRestController {
 			}
 			return ResponseEntity.ok().build();// 成功
 		} catch (OptimisticLockingFailureException e) {
-			Map<String, String> error = new HashMap<>();
-			error.put("optimisticError", e.getMessage());
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+			return handleOptimisticLockError(e);
 		} catch (Exception e) {
-			Map<String, String> error = new HashMap<>();
-			error.put("message", e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+			return handleServerError(e, null);
 		}
+	}
+
+	private ResponseEntity<Map<String, String>> handleValidationErrors(BindingResult result) {
+		Map<String, String> errors = new HashMap<>();
+		for (FieldError fieldError : result.getFieldErrors()) {
+			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+		}
+		return ResponseEntity.badRequest().body(errors);
+	}
+
+	private ResponseEntity<Map<String, String>> handleServerError(Exception e, HttpStatus status) {
+		Map<String, String> error = new HashMap<>();
+		error.put("message", e.getMessage());
+		return ResponseEntity.status(status).body(error);
+	}
+
+	public ResponseEntity<Map<String, String>> handleOptimisticLockError(OptimisticLockingFailureException e) {
+		Map<String, String> error = new HashMap<>();
+		error.put("optimisticError", e.getMessage());
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
 	}
 
 }

@@ -1,10 +1,12 @@
 package jp.co.ridi.teldir.form;
 
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
-import jp.co.ridi.teldir.entity.GroupData;
+import jp.co.ridi.teldir.entity.TelGroup;
+import jp.co.ridi.teldir.form.telNoformatter.PhoneNumberFormatter;
 import lombok.Data;
 
 /**
@@ -12,13 +14,11 @@ import lombok.Data;
  */
 @Data
 public class TelDataForm {
-	
-	
 
 	// ID
 	private Long id;
-	
-	//groupId
+
+	// groupId
 	private Long groupId;
 
 	// ユーザー名
@@ -33,13 +33,33 @@ public class TelDataForm {
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email
 	private String mailAddr;
-	
-	//Javascriptには日付型がないためstringで受け取る
+
+	// Javascriptには日付型がないためstringで受け取る
 	private String lastModified;
-	
+
 	// 一覧画面での行選択チェックボックスの値（削除用ID配列）
 	private Long[] selectRecords;
-	
-	private GroupData group;
+
+	private TelGroup group;
+
+	private List<PhoneNumberFormatter> formatters;
+
+	/**
+	 * @return
+	 */
+	public String formatPhoneNumber() {
+		if (telNo == null) {
+			return null;
+		}
+		String formattedNubmerOnly = telNo.replaceAll("[^0-9]", ""); // 数字以外を全て除去
+
+		for (PhoneNumberFormatter formatter : formatters) {
+			if (formatter.supports(formattedNubmerOnly)) {
+				return formatter.format(formattedNubmerOnly);
+			}
+		}
+
+		return telNo;
+	}
 
 }

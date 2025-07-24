@@ -27,11 +27,21 @@ public class CsvService {
 	}
 
 	// ,のあとにスペース
+	/**
+	 * @param s
+	 * @return
+	 */
 	private String addSpaceAfterComma(String s) {
 		return s != null ? s.replaceAll(",", ", ") : "";
 	}
 
 	// MultipartFileで
+	/**
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 * @throws CsvValidationException
+	 */
 	public List<TelDataDto> parseCsv(MultipartFile file) throws IOException, CsvValidationException {
 		List<TelDataDto> result = new ArrayList<>();
 		try (
@@ -42,15 +52,9 @@ public class CsvService {
 				// 読み取った行をcsvで解析
 				CSVReader csvReader = new CSVReader(reader);) {
 			String[] line;
-			boolean firstLine = true;
 
 			// csvReader.readNext()をlineに代入
 			while ((line = csvReader.readNext()) != null) {
-//				if (firstLine) {
-//					firstLine = false;
-//					continue;
-//				}
-
 				TelDataDto dto = new TelDataDto();
 				// csvの1列目（インデックス0)
 				dto.setUserName(line[0]);
@@ -60,8 +64,6 @@ public class CsvService {
 
 			}
 		}
-
 		return result;
-
 	}
 }

@@ -1,12 +1,9 @@
 package jp.co.ridi.teldir.dto;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
-import jp.co.ridi.teldir.entity.GroupData;
+import jp.co.ridi.teldir.entity.TelGroup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,9 +20,9 @@ public class TelDataDto {
 
 	// 電話番号
 	@NotBlank(message = "電話番号を入力してください")
-	
+
 	private String telNo;
-	
+
 	private String lastModified;
 
 	// メールアドレス
@@ -33,21 +30,16 @@ public class TelDataDto {
 	@Email
 	private String mailAddr;
 
-	private GroupData group;
+	private TelGroup group;
 
 	private transient int rowIndex;
-	
-	
-	
 
-	public TelDataDto(Long id, String userName, String telNo, String mailAddr, GroupData group) {
+	public TelDataDto(Long id, String userName, String telNo, String mailAddr, TelGroup group) {
 		this.id = id;
 		this.userName = userName;
 		this.telNo = telNo;
 		this.mailAddr = mailAddr;
 		this.group = group;
 	}
-
-
 
 }

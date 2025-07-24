@@ -5,16 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jp.co.ridi.teldir.dto.SearchResultDto;
 import jp.co.ridi.teldir.entity.TelData;
-import jp.co.ridi.teldir.repository.GroupDataRepository;
 import jp.co.ridi.teldir.repository.TelDataRepository;
 
 @Service
 public class SearchUserService {
-
-	@Autowired
-	private GroupDataRepository groupDataRepository;
 
 	@Autowired
 	private TelDataRepository telDataRepository;

@@ -1,4 +1,4 @@
-package jp.co.ridi.teldir.repository;
+package jp.co.ridi.teldir.repositoryTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import jp.co.ridi.teldir.entity.TelData;
+import jp.co.ridi.teldir.repository.TelDataRepository;
 
 @DataJpaTest
 public class TelDataRepositoryTest {
@@ -19,11 +20,11 @@ public class TelDataRepositoryTest {
 		telData.setUserName("テスト太郎");
 		telData.setTelNo("090-1234-5678");
 		telData.setMailAddr("test@example.com");
-		
+
 		// Act: 保存
-        TelData saved = telDataRepository.save(telData);
-        
-        assertThat(saved.getId()).isNotNull();
-        System.out.println("自動採番されたID: " + saved.getId());
+		TelData saved = telDataRepository.save(telData);
+
+		assertThat(saved.getId()).isNotNull();
+		System.out.println("自動採番されたID: " + saved.getId());
 	}
 }

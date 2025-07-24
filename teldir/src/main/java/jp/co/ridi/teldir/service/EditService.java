@@ -8,12 +8,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import jp.co.ridi.teldir.dto.EditDto;
 import jp.co.ridi.teldir.dto.TelDataDto;
-import jp.co.ridi.teldir.entity.GroupData;
 import jp.co.ridi.teldir.entity.TelData;
+import jp.co.ridi.teldir.entity.TelGroup;
 import jp.co.ridi.teldir.repository.GroupDataRepository;
 import jp.co.ridi.teldir.repository.TelDataRepository;
 import jp.co.ridi.teldir.util.BeanUtil;
@@ -27,7 +26,7 @@ public class EditService {
 	@Autowired
 	private GroupDataRepository groupDataRepository;
 
-	public TelDataDto findTelData(Long id) {
+	public TelDataDto findTelData(final Long id) {
 		TelData telData = telDataRepository.getOne(id);
 		// findTelDataを実行したとき現在時間を取得し、DBに保存
 		LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -37,13 +36,13 @@ public class EditService {
 		TelDataDto dto = BeanUtil.createProperties(telData, TelDataDto.class);
 		return dto;
 	}
-	
+
 	public void saveTelData(EditDto dto) {
 		// idがnullの時（新規作成の時）
 		if (dto.getId() == null) {
 			// --- 新規登録処理 ---
 			TelData entity = BeanUtil.createProperties(dto, TelData.class);
-			
+
 			telDataRepository.save(entity);
 			return; // ★更新処理へ進まないようにする
 		}
@@ -72,26 +71,11 @@ public class EditService {
 
 		// groupIdがある場合,groupDataを取得してセット(編集画面でgroupIdを保持するため）
 		if (dto.getGroupId() != null) {
-			GroupData group = groupDataRepository.findById(dto.getGroupId()).orElse(null);
+			TelGroup group = groupDataRepository.findById(dto.getGroupId()).orElse(null);
 			entity.setGroup(group);
 		}
 		// enitiyをDBに保存
 		telDataRepository.save(entity);
-	}
-
-	// 電話番号加工ロジック
-	public String formatTelNo(String telNo) {
-		if (telNo == null) {
-			return null;
-		}
-		if (telNo.matches("^\\d{10}$")) {
-			return telNo.replaceFirst("(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3");
-		} else if (telNo.matches("^\\d{11}$")) {
-			return telNo.replaceFirst("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
-		} else if ((telNo.matches("^\\d{2,4}-\\d{2,4}-\\d{3,4}$"))) {
-			return telNo;
-		}
-		return telNo;
 	}
 
 	public List<TelData> findTelAllData(List<Long> ids) {

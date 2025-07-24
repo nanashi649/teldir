@@ -9,9 +9,8 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import jp.co.ridi.teldir.dto.EditGroupDto;
-import jp.co.ridi.teldir.dto.GroupDataDto;
-import jp.co.ridi.teldir.entity.GroupData;
-import jp.co.ridi.teldir.entity.TelData;
+import jp.co.ridi.teldir.dto.TelGroupDto;
+import jp.co.ridi.teldir.entity.TelGroup;
 import jp.co.ridi.teldir.repository.GroupDataRepository;
 import jp.co.ridi.teldir.util.BeanUtil;
 
@@ -20,23 +19,23 @@ public class EditGroupService {
 	@Autowired
 	private GroupDataRepository groupDataRepository;
 
-	public GroupDataDto findGroupData(Long groupId) {
+	public TelGroupDto findGroupData(Long groupId) {
 
 		// optionalがあるとcreatePropertiesが使えないのでgroupDataに一度変換
-		Optional<GroupData> optional = groupDataRepository.findById(groupId);
+		Optional<TelGroup> optional = groupDataRepository.findById(groupId);
 
-		GroupData entity = optional.get();
+		TelGroup entity = optional.get();
 		LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 		entity.setLastModified(now);
 		groupDataRepository.save(entity);
-		return BeanUtil.createProperties(entity, GroupDataDto.class);
+		return BeanUtil.createProperties(entity, TelGroupDto.class);
 	}
 
 	public void saveGroupData(EditGroupDto dto) {
 		// idがnullの時（新規作成の時）
 		if (dto.getGroupId() == null) {
 			// --- 新規登録処理 ---
-			GroupData entity = BeanUtil.createProperties(dto, GroupData.class);
+			TelGroup entity = BeanUtil.createProperties(dto, TelGroup.class);
 
 			groupDataRepository.save(entity);
 			return; // ★更新処理へ進まないようにする
@@ -44,8 +43,8 @@ public class EditGroupService {
 //		Optional<GroupData> optional = groupDataRepository.findById(dto.getGroupId());
 //		GroupData existing = optional.get();
 		// 取得した時間の秒未満切り捨て
-		LocalDateTime dbTime = groupDataRepository.findById(dto.getGroupId())
-				.get().getLastModified().truncatedTo(ChronoUnit.SECONDS);
+		LocalDateTime dbTime = groupDataRepository.findById(dto.getGroupId()).get().getLastModified()
+				.truncatedTo(ChronoUnit.SECONDS);
 
 		// クライアントから渡されたlastmodified(文字列)を日時に変換
 		LocalDateTime clientModified = LocalDateTime.parse(dto.getLastModified());
@@ -55,7 +54,7 @@ public class EditGroupService {
 			throw new OptimisticLockingFailureException("ほかのユーザーによって更新されています。\n再度読み込んでください。");
 		}
 
-		GroupData entity = BeanUtil.createProperties(dto, GroupData.class);
+		TelGroup entity = BeanUtil.createProperties(dto, TelGroup.class);
 
 		entity.setLastModified(clientModified);
 

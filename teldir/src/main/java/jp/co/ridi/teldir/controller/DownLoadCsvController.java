@@ -20,19 +20,24 @@ import jp.co.ridi.teldir.service.IndexService;
 public class DownLoadCsvController {
 	@Autowired
 	CsvService csvService;
-	
+
 	@Autowired
 	IndexService service;
-	
-	@RequestMapping(method = RequestMethod.GET) 
-	public void downloadCsv(HttpServletResponse response) throws IOException{
+
+	/**
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	void downloadCsv(HttpServletResponse response) throws IOException {
 		response.setContentType("text/csv ; charset=UTF-8");
-		//Content-Disposition→ファイルの中身の取り扱い方→即時ダウンロード
+		// Content-Disposition→ファイルの中身の取り扱い方→即時ダウンロード
 		response.setHeader("Content-Disposition", "attachment; filename = \"teldata.csv\"");
-		OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(),java.nio.charset.StandardCharsets.UTF_8);
+		OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(),
+				java.nio.charset.StandardCharsets.UTF_8);
 		writer.write('\uFEFF');
 		List<TelDataDto> dataList = service.findTelDataList();
-		csvService.writeCsv(writer,dataList);
+		csvService.writeCsv(writer, dataList);
 		writer.flush();
 		writer.close();
 	}

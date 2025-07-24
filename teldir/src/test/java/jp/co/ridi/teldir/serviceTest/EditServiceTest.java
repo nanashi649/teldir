@@ -1,4 +1,4 @@
-package jp.co.ridi.teldir.Service;
+package jp.co.ridi.teldir.serviceTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

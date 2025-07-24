@@ -32,6 +32,6 @@ public class TelData {
 	@ManyToOne
 	@JoinColumn(name = "group_id")
 	@NotFound(action = NotFoundAction.IGNORE) // groupidが見つからないときは無視する
-	private GroupData group;
+	private TelGroup group;
 
 }

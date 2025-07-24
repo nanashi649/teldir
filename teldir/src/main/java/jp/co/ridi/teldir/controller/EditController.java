@@ -26,11 +26,12 @@ public class EditController {
 	private EditService service;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String index(@ModelAttribute TelDataForm form, Model model) {
+	String index(@ModelAttribute TelDataForm form, Model model) {
 //		 新規作成モード
 		if (form.getId() == null) {
 			return "edit";
 		}
+
 		TelDataDto dto = service.findTelData(form.getId());
 		TelDataForm telDataForm = BeanUtil.createProperties(dto, TelDataForm.class);
 
@@ -58,7 +59,6 @@ public class EditController {
 			return "edit";
 		}
 
-		form.setTelNo(service.formatTelNo(form.getTelNo()));
 		service.saveTelData(BeanUtil.createProperties(form, EditDto.class));
 
 		return "redirect:/";

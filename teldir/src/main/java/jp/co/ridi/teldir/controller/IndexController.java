@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import jp.co.ridi.teldir.dto.TelDataDto;
 import jp.co.ridi.teldir.entity.TelData;
-import jp.co.ridi.teldir.form.GroupDataForm;
 import jp.co.ridi.teldir.form.TelDataForm;
+import jp.co.ridi.teldir.form.TelGroupForm;
 import jp.co.ridi.teldir.service.IndexGroupService;
 import jp.co.ridi.teldir.service.IndexService;
 import jp.co.ridi.teldir.service.SearchUserService;
-import jp.co.ridi.teldir.util.BeanUtil;
 
 /**
  * 一覧画面（Topページ）のコントローラークラス
@@ -75,7 +73,7 @@ public class IndexController {
 	}
 
 	@RequestMapping(path = "deleteGroup", method = RequestMethod.POST)
-	public String deleteGroup(@ModelAttribute GroupDataForm form, Model model) {
+	public String deleteGroup(@ModelAttribute TelGroupForm form, Model model) {
 		groupService.deleteGroupData(form.getSelectRecords());
 		return "redirect:/";
 	}
