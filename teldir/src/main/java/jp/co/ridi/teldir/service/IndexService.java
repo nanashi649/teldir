@@ -85,21 +85,6 @@ public class IndexService {
 
 	}
 
-	public String getFormattedTelNo(String telNo) {
-		if (telNo == null)
-			return null;
-
-		String digits = telNo.replaceAll("[^0-9]", "");
-
-		if (digits.length() == 11) {
-			return digits.substring(0, 3) + "-" + digits.substring(3, 7) + "-" + digits.substring(7);
-		} else if (digits.length() == 10 && digits.startsWith("06")) {
-			return digits.substring(0, 2) + "-" + digits.substring(2, 6) + "-" + digits.substring(6);
-		} else {
-			return telNo;
-		}
-	}
-
 	/**
 	 * 電話帳データ削除処理メソッド
 	 * 

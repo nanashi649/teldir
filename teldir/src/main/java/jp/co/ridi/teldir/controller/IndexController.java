@@ -45,8 +45,6 @@ public class IndexController {
 		// 値に電話帳データリスト検索処理メソッドの戻り値を設定する。
 		// modelは、フレームワーク提供の画面とJava間でデータをやりとりするためのオブジェクト
 
-//		TelDataForm form = BeanUtil.createProperties(service.findTelDataList(), TelDataForm.class);
-
 		model.addAttribute("telDataList", service.findTelDataList());
 		// userNameだけ抽出
 		// 一覧画面（index.html）を返却
