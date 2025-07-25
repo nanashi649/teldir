@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jp.co.ridi.teldir.dto.TelDataDto;
+import jp.co.ridi.teldir.form.telNoformatter.PhoneNumberFormatter;
 import jp.co.ridi.teldir.repository.TelDataRepository;
 
 /**
@@ -21,6 +22,9 @@ public class IndexService {
 	@Autowired
 	private TelDataRepository telDataRepository;
 
+	@Autowired
+	private List<PhoneNumberFormatter> formatters;
+
 	/**
 	 * 電話帳データリスト検索処理メソッド
 	 * 
@@ -30,6 +34,8 @@ public class IndexService {
 		List<TelDataDto> dtoList = telDataRepository.findAll().stream().map(t -> {
 
 			TelDataDto dto = new TelDataDto(t.getId(), t.getUserName(), t.getTelNo(), t.getMailAddr(), t.getGroup());
+			// フォーマッターの適用
+			dto.setFormatters(formatters);
 			return dto;
 		}).collect(Collectors.toList());
 
@@ -38,13 +44,10 @@ public class IndexService {
 			TelDataDto dto = dtoList.get(i);
 			dto.setRowIndex(i);
 
-			String userName = dto.getUserName();
+			dto.setUserName(getFullNameWithSpace(dto.getUserName(), i)); // userName に加工名を上書きしている場合
 
-			dto.setUserName(getFullNameWithSpace(userName, i)); // userName に加工名を上書きしている場合
-
-//	        String telNo = dto.getTelNo();
-//	        
-//	        dto.setTelNo(getFormattedTelNo(telNo));
+			// 電話番号のフォーマッターを適用
+			dto.setTelNo(dto.formatPhoneNumber());
 
 		}
 
