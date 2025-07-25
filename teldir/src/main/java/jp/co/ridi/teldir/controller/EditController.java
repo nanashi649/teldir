@@ -18,6 +18,9 @@ import jp.co.ridi.teldir.form.TelDataForm;
 import jp.co.ridi.teldir.service.EditService;
 import jp.co.ridi.teldir.util.BeanUtil;
 
+/**
+ * 
+ */
 @Controller
 @RequestMapping("/edit")
 public class EditController {
@@ -25,6 +28,11 @@ public class EditController {
 	@Autowired
 	private EditService service;
 
+	/**
+	 * @param form
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	String index(@ModelAttribute TelDataForm form, Model model) {
 //		 新規作成モード
@@ -44,6 +52,11 @@ public class EditController {
 		return "edit";
 	}
 
+	/**
+	 * @param form
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public String editAll(@ModelAttribute TelDataAllForm form, Model model) {
 
@@ -53,6 +66,12 @@ public class EditController {
 		return "editAll";
 	}
 
+	/**
+	 * @param form
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String save(@ModelAttribute @Validated TelDataForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
@@ -65,6 +84,12 @@ public class EditController {
 	}
 
 	// 一括保存用
+	/**
+	 * @param form
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/all/saveAll", method = RequestMethod.POST)
 	public String saveAll(@ModelAttribute @Validated TelDataAllForm form, BindingResult result, Model model) {
 

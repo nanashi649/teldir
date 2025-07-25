@@ -20,6 +20,11 @@ public class EditGroupController {
 	@Autowired
 	EditGroupService service;
 
+	/**
+	 * @param form
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(@ModelAttribute TelGroupForm form, Model model) {
 		if (form.getGroupId() == null) {
@@ -33,6 +38,12 @@ public class EditGroupController {
 		return "editGroup";
 	}
 
+	/**
+	 * @param form
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/saveGroup", method = RequestMethod.POST)
 	public String save(@ModelAttribute @Validated TelGroupForm form, BindingResult result, Model model) {
 

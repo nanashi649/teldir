@@ -18,6 +18,11 @@ import jp.co.ridi.teldir.dto.TelDataDto;
 
 @Service
 public class CsvService {
+	/**
+	 * @param writer
+	 * @param dataList
+	 * @throws IOException
+	 */
 	public void writeCsv(Writer writer, List<TelDataDto> dataList) throws IOException {
 		for (TelDataDto data : dataList) {
 			writer.write(String.join(",", addSpaceAfterComma(data.getUserName()), addSpaceAfterComma(data.getTelNo()),

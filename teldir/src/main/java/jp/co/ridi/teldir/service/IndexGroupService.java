@@ -12,18 +12,22 @@ import jp.co.ridi.teldir.repository.GroupDataRepository;
 public class IndexGroupService {
 	@Autowired
 	GroupDataRepository repository;
-	
-	public List<TelGroup> findGroupDataList(){
+
+	/**
+	 * @return
+	 */
+	public List<TelGroup> findGroupDataList() {
 		return repository.findAll();
 	}
-	
-	
-	
+
+	/**
+	 * @param idArray
+	 */
 	public void deleteGroupData(Long... idArray) {
-		if(idArray == null) {
+		if (idArray == null) {
 			return;
 		}
-		for(long id :idArray) {
+		for (long id : idArray) {
 			repository.deleteById(id);
 		}
 	}

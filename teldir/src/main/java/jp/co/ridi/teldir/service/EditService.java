@@ -26,6 +26,10 @@ public class EditService {
 	@Autowired
 	private GroupDataRepository groupDataRepository;
 
+	/**
+	 * @param id
+	 * @return
+	 */
 	public TelDataDto findTelData(final Long id) {
 		TelData telData = telDataRepository.getOne(id);
 		// findTelDataを実行したとき現在時間を取得し、DBに保存
@@ -37,6 +41,9 @@ public class EditService {
 		return dto;
 	}
 
+	/**
+	 * @param dto
+	 */
 	public void saveTelData(EditDto dto) {
 		// idがnullの時（新規作成の時）
 		if (dto.getId() == null) {
@@ -78,6 +85,10 @@ public class EditService {
 		telDataRepository.save(entity);
 	}
 
+	/**
+	 * @param ids
+	 * @return
+	 */
 	public List<TelData> findTelAllData(List<Long> ids) {
 		return telDataRepository.findAllById(ids);
 	}

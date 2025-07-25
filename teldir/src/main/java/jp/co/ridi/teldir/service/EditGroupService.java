@@ -19,6 +19,10 @@ public class EditGroupService {
 	@Autowired
 	private GroupDataRepository groupDataRepository;
 
+	/**
+	 * @param groupId
+	 * @return
+	 */
 	public TelGroupDto findGroupData(Long groupId) {
 
 		// optionalがあるとcreatePropertiesが使えないのでgroupDataに一度変換
@@ -31,6 +35,9 @@ public class EditGroupService {
 		return BeanUtil.createProperties(entity, TelGroupDto.class);
 	}
 
+	/**
+	 * @param dto
+	 */
 	public void saveGroupData(EditGroupDto dto) {
 		// idがnullの時（新規作成の時）
 		if (dto.getGroupId() == null) {
@@ -40,8 +47,7 @@ public class EditGroupService {
 			groupDataRepository.save(entity);
 			return; // ★更新処理へ進まないようにする
 		}
-//		Optional<GroupData> optional = groupDataRepository.findById(dto.getGroupId());
-//		GroupData existing = optional.get();
+
 		// 取得した時間の秒未満切り捨て
 		LocalDateTime dbTime = groupDataRepository.findById(dto.getGroupId()).get().getLastModified()
 				.truncatedTo(ChronoUnit.SECONDS);

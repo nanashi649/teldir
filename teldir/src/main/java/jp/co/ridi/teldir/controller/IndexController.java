@@ -72,12 +72,23 @@ public class IndexController {
 		return "redirect:/";
 	}
 
+	/**
+	 * @param form
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(path = "deleteGroup", method = RequestMethod.POST)
 	public String deleteGroup(@ModelAttribute TelGroupForm form, Model model) {
 		groupService.deleteGroupData(form.getSelectRecords());
 		return "redirect:/";
 	}
 
+	/**
+	 * @param userName
+	 * @param groupName
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(path = "/search", method = RequestMethod.GET)
 	public String searchUsers(String userName, String groupName, Model model) {
 		List<TelData> result = searchUserService.searchByUserNameAndGroupName(userName, groupName);

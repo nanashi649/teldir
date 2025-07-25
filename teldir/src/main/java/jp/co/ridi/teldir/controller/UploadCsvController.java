@@ -18,26 +18,31 @@ import jp.co.ridi.teldir.util.BeanUtil;
 @Controller
 @RequestMapping("/upload")
 public class UploadCsvController {
-	
+
 	@Autowired
 	CsvService csvService;
-	
+
 	@Autowired
 	EditService service;
-	
+
+	/**
+	 * @param file
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String uploadCsv(@RequestParam("file") MultipartFile file,org.springframework.ui.Model model) {
-		if(file.isEmpty()) {
+	public String uploadCsv(@RequestParam("file") MultipartFile file, org.springframework.ui.Model model) {
+		if (file.isEmpty()) {
 			model.addAttribute("message", "ファイルが選択されていません");
 			return "uploadResult";
 		}
 		try {
 			List<TelDataDto> teldataList = csvService.parseCsv(file);
-			for(TelDataDto dto:teldataList) {
+			for (TelDataDto dto : teldataList) {
 				service.saveTelData(BeanUtil.createProperties(dto, EditDto.class));
 			}
 			model.addAttribute("message", "CSVアップロード成功");
-		}catch (Exception e) {
+		} catch (Exception e) {
 			model.addAttribute("message", "CSVアップロード失敗: " + e.getMessage());
 		}
 		return "uploadResult";

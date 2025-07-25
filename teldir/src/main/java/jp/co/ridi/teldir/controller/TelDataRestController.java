@@ -35,6 +35,11 @@ public class TelDataRestController {
 	@Autowired
 	EditGroupService groupService;
 
+	/**
+	 * @param form
+	 * @param result
+	 * @return
+	 */
 	@PostMapping("/save")
 	public ResponseEntity<?> saveTelData(@RequestBody @Valid TelDataForm form, BindingResult result) {
 		// ヴァリデーションエラーがあった場合.badRequest()を返す
@@ -56,6 +61,11 @@ public class TelDataRestController {
 		}
 	}
 
+	/**
+	 * @param form
+	 * @param result
+	 * @return
+	 */
 	@PostMapping("/saveGroup")
 	public ResponseEntity<?> saveGroupTelData(@RequestBody @Valid TelGroupForm form, BindingResult result) {
 		// ヴァリデーションエラーがあった場合.badRequest()を返す
@@ -78,6 +88,11 @@ public class TelDataRestController {
 		}
 	}
 
+	/**
+	 * @param form
+	 * @param result
+	 * @return
+	 */
 	@PostMapping("/saveAll")
 	public ResponseEntity<?> saveAllTelData(@RequestBody @Valid TelDataAllForm form, BindingResult result) {
 		// ヴァリデーションエラーがあった場合.badRequest()を返す
@@ -102,20 +117,21 @@ public class TelDataRestController {
 		}
 	}
 
-	private ResponseEntity<Map<String, String>> handleValidationErrors(BindingResult result) {
-		Map<String, String> errors = new HashMap<>();
-		for (FieldError fieldError : result.getFieldErrors()) {
-			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-		}
-		return ResponseEntity.badRequest().body(errors);
-	}
-
+	/**
+	 * @param e
+	 * @param status
+	 * @return
+	 */
 	private ResponseEntity<Map<String, String>> handleServerError(Exception e, HttpStatus status) {
 		Map<String, String> error = new HashMap<>();
 		error.put("message", e.getMessage());
 		return ResponseEntity.status(status).body(error);
 	}
 
+	/**
+	 * @param e
+	 * @return
+	 */
 	public ResponseEntity<Map<String, String>> handleOptimisticLockError(OptimisticLockingFailureException e) {
 		Map<String, String> error = new HashMap<>();
 		error.put("optimisticError", e.getMessage());
